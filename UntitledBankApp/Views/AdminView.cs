@@ -20,15 +20,13 @@ public class AdminView : View
 
     }
 
-    public (int userTypeInput, string fullName, string username, string password, string passwordVerified, string email, string emailVerified, string address, string telephonenumber) CreateUser()
+    public (UserType userType, string fullName, string username, string password, string passwordVerified, string email, string emailVerified, string address, string telephonenumber) CreateUser()
     {
-        int userTypeInput = 0; // Assign a default value
-
+        int userTypeInput = 0; 
         bool isValidInput = false;
 
         while (!isValidInput)
         {
-
             string userTypeInputString = InputUtils.GetNonEmptyString("Select user type:\n1. Admin\n2. Client\nEnter the user type (1 or 2): ");
 
             isValidInput = int.TryParse(userTypeInputString, out userTypeInput);
@@ -51,10 +49,7 @@ public class AdminView : View
         string address = InputUtils.GetNonEmptyString("Address");
         string telephonenumber = InputUtils.GetNonEmptyString("Telephone Number");
 
-        Role userRole = userTypeInput == 1 ? Role.Admin : Role.Client;
-
-        return (userTypeInput, fullName, username, password, passwordVerified, email, emailVerified, address, telephonenumber);
-        
+        return (userType, fullName, username, password, passwordVerified, email, emailVerified, address, telephonenumber);
     }
 
 

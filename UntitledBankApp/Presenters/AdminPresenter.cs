@@ -2,7 +2,6 @@
 using UntitledBankApp.Models;
 using UntitledBankApp.Services;
 using UntitledBankApp.Views.Utilities;
-
 namespace UntitledBankApp.Presenters;
 
 public class AdminPresenter : Presenter
@@ -106,7 +105,8 @@ public class AdminPresenter : Presenter
 
         try
         {
-            bool userCreated = _adminService.CreateUser((Role)createUserResult.userTypeInput, createUserResult.fullName, createUserResult.username, createUserResult.password, createUserResult.passwordVerified, createUserResult.email, createUserResult.emailVerified, createUserResult.address, createUserResult.telephonenumber);
+            Role userRole = createUserResult.userType == UserType.Admin ? Role.Admin : Role.Client;
+            bool userCreated = _adminService.CreateUser(userRole, createUserResult.fullName, createUserResult.username, createUserResult.password, createUserResult.passwordVerified, createUserResult.email, createUserResult.emailVerified, createUserResult.address, createUserResult.telephonenumber);
 
             if (userCreated)
             {
@@ -115,15 +115,12 @@ public class AdminPresenter : Presenter
             else
             {
                 Console.WriteLine("Failed to create user. Please check the error messages.");
-
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"An error occurred: {ex.Message}");
-
         }
-        
     }
 
     public void CurrencyCode()
