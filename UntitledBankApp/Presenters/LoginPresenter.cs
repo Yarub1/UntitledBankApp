@@ -1,80 +1,80 @@
 using UntitledBankApp.Factories;
 using UntitledBankApp.Views.Utilities;
 using UntitledBankApp;
+using System;
 
+public class LoginPresenter : Presenter
+{
+    private PseudoDb _pseudoDb;
+    private LoginService _loginService;
+    private LoginView _loginView;
+    private const int MaxLoginAttempts = 3;
+    private int _loginAttempts;
+    private bool _logoutRequested = false;
 
-    public class LoginPresenter : Presenter
+    public LoginPresenter(PseudoDb pseudoDb, LoginService loginService, LoginView loginView)
     {
-        private PseudoDb _pseudoDb;
-        private LoginService _loginService;
-        private LoginView _loginView;
-        private const int MaxLoginAttempts = 3;
-        private int _loginAttempts;
-        private bool _logoutRequested = false;
-        public LoginPresenter(PseudoDb pseudoDb, LoginService loginService, LoginView loginView)
+        _pseudoDb = pseudoDb;
+        _loginService = loginService;
+        _loginView = loginView;
+        _loginAttempts = 0;
+    }
+
+    public override void HandlePresenter()
+    {
+        while (!_logoutRequested)
         {
-            _pseudoDb = pseudoDb;
-            _loginService = loginService;
-            _loginView = loginView;
+            // Reset login attempts for each login attempt
             _loginAttempts = 0;
-        }
 
-        public override void HandlePresenter()
-        {
-            while (!_logoutRequested)
+            // Allow multiple login attempts until logout is requested
+            while (_loginAttempts < MaxLoginAttempts)
             {
-                // Reset login attempts for each login attempt
-                _loginAttempts = 0;
+                var user = GetUserFromCredentials();
 
-                // Allow multiple login attempts until logout is requested
-                while (_loginAttempts < MaxLoginAttempts)
+                if (user != null)
                 {
-                    var user = GetUserFromCredentials();
-
-                    if (user != null)
-                    {
-                        RedirectUserBasedOnRole(user);
-                        break; // Exit the login attempt loop on successful login
-                    }
-
-                    _loginAttempts++;
-                    Console.WriteLine($"Invalid login attempt {_loginAttempts}/{MaxLoginAttempts}. Please try again.");
+                    RedirectUserBasedOnRole(user);
+                    break; // Exit the login attempt loop on successful login
                 }
 
-                // Display a message or take action after reaching the maximum login attempts
-                if (_loginAttempts == MaxLoginAttempts)
-                {
-                    Console.WriteLine("Maximum login attempts reached. Exiting application.");
-                    Environment.Exit(0);
-                }
+                _loginAttempts++;
+                Console.WriteLine($"{ConsoleColors.Red}Invalid login attempt {_loginAttempts}/{MaxLoginAttempts}. Please try again.{ConsoleColors.Reset}");
             }
-        }
 
-        private User? GetUserFromCredentials()
-        {
-            var (username, password) = _loginView.GetCredentials();
-            var user = _loginService.GetUser(username, password);
-
-            return user;
-        }
-
-        private void RedirectUserBasedOnRole(User user)
-        {
-            switch (user)
+            // Display a message or take action after reaching the maximum login attempts
+            if (_loginAttempts == MaxLoginAttempts)
             {
-                case Client client:
-                RunPresenter(new ClientPresenter(_pseudoDb, new ClientService(_pseudoDb), new ClientView(client), new InputClient()));
-                break;
-                case Admin admin:
-                    RunPresenter(new AdminPresenter(_pseudoDb, new AdminService(_pseudoDb, new UserFactory()), new AdminView(admin)));
-                    break;
+                Console.WriteLine($"{ConsoleColors.Red}Maximum login attempts reached. Exiting application.{ConsoleColors.Reset}");
+                Environment.Exit(0);
             }
-        }
-
-        public void RequestLogout()
-        {
-            _logoutRequested = true;
-            Console.WriteLine("Logging out...");
         }
     }
 
+    private User? GetUserFromCredentials()
+    {
+        var (username, password) = _loginView.GetCredentials();
+        var user = _loginService.GetUser(username, password);
+
+        return user;
+    }
+
+    private void RedirectUserBasedOnRole(User user)
+    {
+        switch (user)
+        {
+            case Client client:
+                RunPresenter(new ClientPresenter(_pseudoDb, new ClientService(_pseudoDb), new ClientView(client), new InputClient()));
+                break;
+            case Admin admin:
+                RunPresenter(new AdminPresenter(_pseudoDb, new AdminService(_pseudoDb, new UserFactory()), new AdminView(admin)));
+                break;
+        }
+    }
+
+    public void RequestLogout()
+    {
+        _logoutRequested = true;
+        Console.WriteLine($"{ConsoleColors.Cyan}Logging out...{ConsoleColors.Reset}");
+    }
+}

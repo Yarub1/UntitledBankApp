@@ -4,22 +4,22 @@ public class LoginView : View
 {
     public (string username, string password) GetCredentials()
     {
-        Console.WriteLine("Welcome to the Banking App");
-        var menuOptions = new string[] { "1. Login", "2. About", "3. Exit" };
+        Console.WriteLine($"{ConsoleColors.Cyan}Welcome to the Banking App{ConsoleColors.Reset}");
+        var menuOptions = new string[] { $"{ConsoleColors.Green}1. Login{ConsoleColors.Reset}", $"{ConsoleColors.Yellow}2. About{ConsoleColors.Reset}", $"{ConsoleColors.Red}3. Exit{ConsoleColors.Reset}" };
         Array.ForEach(menuOptions, Console.WriteLine);
 
         bool Choices = false;
         while (!Choices)
         {
-            string LoginChoice = InputUtils.GetNonEmptyString("[Type Option Number]"); // Get user's input
+            string LoginChoice = InputUtils.GetNonEmptyString($"{ConsoleColors.Magenta}[Type Option Number]{ConsoleColors.Reset}"); // Get user's input
 
             // Perform the selected action
             switch (LoginChoice)
             {
                 case "1":
                     Console.Clear();
-                    var username = InputUtils.GetNonEmptyString("Username");
-                    var password = GetHiddenPassword("Password:");
+                    var username = InputUtils.GetNonEmptyString($"{ConsoleColors.Yellow}Username{ConsoleColors.Reset}");
+                    var password = GetHiddenPassword($"{ConsoleColors.Yellow}Password{ConsoleColors.Reset}:");
                     return (username, password);
                 case "2":
                     DisplayAbout();
@@ -31,7 +31,7 @@ public class LoginView : View
                     Choices = true; // Exit the loop to indicate logout
                     break;
                 default:
-                    Console.WriteLine("Invalid choice. Please try again.");
+                    Console.WriteLine($"{ConsoleColors.Red}Invalid choice. Please try again.{ConsoleColors.Reset}");
                     break;
             }
         }
@@ -55,7 +55,7 @@ public class LoginView : View
     {
         foreach (var name in names)
         {
-            Console.WriteLine(name);
+            Console.WriteLine($"{ConsoleColors.White}{name}{ConsoleColors.Reset}");
             System.Threading.Thread.Sleep(1000);
         }
         Console.Clear();
@@ -65,7 +65,7 @@ public class LoginView : View
 
     private string GetHiddenPassword(string prompt)
     {
-        Console.Write(prompt);
+        Console.Write($"{ConsoleColors.Yellow}{prompt}{ConsoleColors.Reset}");
         string password = "";
         ConsoleKeyInfo key;
 
@@ -77,12 +77,12 @@ public class LoginView : View
             if (key.Key != ConsoleKey.Backspace && key.KeyChar != '\u0000' && key.Key != ConsoleKey.Enter)
             {
                 password += key.KeyChar;
-                Console.Write("*");
+                Console.Write($"{ConsoleColors.Green}*{ConsoleColors.Reset}");
             }
             else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
             {
                 password = password[0..^1];
-                Console.Write("\b \b");
+                Console.Write($"{ConsoleColors.Red}\b \b{ConsoleColors.Reset}");
             }
         } while (key.Key != ConsoleKey.Enter);
 

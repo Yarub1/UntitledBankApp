@@ -12,9 +12,8 @@ namespace UntitledBankApp.Views.Utilities
         public bool GetYesNoAnswer(string prompt)
         {
             while (true)
-            {              
-
-                string answer = InputUtils.GetNonEmptyString($"{prompt} (yes/no)");
+            {
+                string answer = InputUtils.GetNonEmptyString($"{ConsoleColors.White}{prompt} (yes/no){ConsoleColors.Reset}");
 
                 if (answer == "yes" || answer == "y")
                 {
@@ -25,19 +24,15 @@ namespace UntitledBankApp.Views.Utilities
                     return false;
                 }
 
-                Console.WriteLine ("Invalid input. Please enter 'yes' or 'no'.");
+                Console.WriteLine($"{ConsoleColors.Red}Invalid input. Please enter 'yes' or 'no'.{ConsoleColors.Reset}");
             }
         }
 
-
-
         public int GetAccountNumber(string prompt)
         {
-            //Console.WriteLine (prompt);
-
             while (true)
             {
-                var input = InputUtils.GetNonEmptyString($"{prompt}");
+                var input = InputUtils.GetNonEmptyString($"{ConsoleColors.White}{prompt}{ConsoleColors.Reset}");
 
                 if (int.TryParse(input, out int accountNumber) && !string.IsNullOrWhiteSpace(input))
                 {
@@ -45,17 +40,15 @@ namespace UntitledBankApp.Views.Utilities
                     return accountNumber;
                 }
 
-                Console.WriteLine("Invalid input. Please enter a valid account number.");
+                Console.WriteLine($"{ConsoleColors.Red}Invalid input. Please enter a valid account number.{ConsoleColors.Reset}");
             }
         }
 
-
         public decimal GetTransferAmount()
         {
-
             while (true)
             {
-                var input = InputUtils.GetNonEmptyString($"Enter the transfer amount");
+                var input = InputUtils.GetNonEmptyString($"{ConsoleColors.White}Enter the transfer amount{ConsoleColors.Reset}");
 
                 if (decimal.TryParse(input, out decimal transferAmount) && !string.IsNullOrWhiteSpace(input))
                 {
@@ -63,68 +56,49 @@ namespace UntitledBankApp.Views.Utilities
                     return transferAmount;
                 }
 
-                Console.WriteLine ("Invalid transfer amount format. Please enter a valid decimal number.");
+                Console.WriteLine($"{ConsoleColors.Red}Invalid transfer amount format. Please enter a valid decimal number.{ConsoleColors.Reset}");
             }
         }
 
-
-
-
-
-
-
-
-
         public string GetAccountType()
         {
-            return InputUtils.GetNonEmptyString("Enter the account type (savings, checking)");
+            return InputUtils.GetNonEmptyString($"{ConsoleColors.White}Enter the account type (savings, checking){ConsoleColors.Reset}");
         }
 
         public CurrencyCode GetCurrencyCode()
         {
-            // Add logic to convert the user input to CurrencyCode
-            // For example, you might parse the string or use a dictionary to map input to CurrencyCode
-            string currencyCodeStr = InputUtils.GetNonEmptyString("Enter the currency code (SEK, USD, EUR)".ToUpper());
-            // Assume CurrencyCode is an enum
+            string currencyCodeStr = InputUtils.GetNonEmptyString($"{ConsoleColors.White}Enter the currency code (SEK, USD, EUR){ConsoleColors.Reset}".ToUpper());
             return (CurrencyCode)Enum.Parse(typeof(CurrencyCode), currencyCodeStr, true);
-
         }
 
         public decimal GetInitialDeposit()
         {
-            // Add logic to validate and parse the user input as a decimal
             decimal initialDeposit;
-            while (!decimal.TryParse(InputUtils.GetNonEmptyString("Enter the initial deposit amount"), out initialDeposit))
+            while (!decimal.TryParse(InputUtils.GetNonEmptyString($"{ConsoleColors.White}Enter the initial deposit amount{ConsoleColors.Reset}"), out initialDeposit))
             {
-                Console.WriteLine("Invalid input. Please enter a valid decimal number.");
-                Console.WriteLine("Enter the initial deposit amount: ");
+                Console.WriteLine($"{ConsoleColors.Red}Invalid input. Please enter a valid decimal number.{ConsoleColors.Reset}");
             }
             return initialDeposit;
         }
 
-
         public decimal GetCurrencyRate()
         {
-            // Add logic to validate and parse the user input as a decimal
             decimal CurrencyRate;
-            while (!decimal.TryParse(InputUtils.GetNonEmptyString("Enter the currency rate"), out CurrencyRate))
+            while (!decimal.TryParse(InputUtils.GetNonEmptyString($"{ConsoleColors.White}Enter the currency rate{ConsoleColors.Reset}"), out CurrencyRate))
             {
-                Console.WriteLine("Invalid input. Please enter a valid decimal number.");
+                Console.WriteLine($"{ConsoleColors.Red}Invalid input. Please enter a valid decimal number.{ConsoleColors.Reset}");
             }
             return CurrencyRate;
         }
 
         public decimal GetLoanAmount()
         {
-            // Add logic to validate and parse the user input as a decimal
             decimal loanAmount;
-            while (!decimal.TryParse(InputUtils.GetNonEmptyString("Enter the loan Amount"), out loanAmount))
+            while (!decimal.TryParse(InputUtils.GetNonEmptyString($"{ConsoleColors.White}Enter the loan Amount{ConsoleColors.Reset}"), out loanAmount))
             {
-                Console.WriteLine("Invalid input. Please enter a valid decimal number.");
+                Console.WriteLine($"{ConsoleColors.Red}Invalid input. Please enter a valid decimal number.{ConsoleColors.Reset}");
             }
             return loanAmount;
         }
-
-
     }
 }

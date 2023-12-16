@@ -3,14 +3,14 @@ global using UntitledBankApp.Presenters;
 global using UntitledBankApp.Services;
 global using UntitledBankApp.Views;
 namespace UntitledBankApp.Views.Utilities;
+
 public static class InputUtils
 {
     public static string GetNonEmptyString(string prompt)
     {
         while (true)
         {
-
-            Console.Write($"{char.ToUpper(prompt[0]) + prompt[1..].ToLower()}: ");
+            Console.Write($"{ConsoleColors.White}{char.ToUpper(prompt[0]) + prompt[1..].ToLower()}: {ConsoleColors.Reset}");
             var input = Console.ReadLine();
 
             if (!string.IsNullOrWhiteSpace(input))
@@ -19,10 +19,7 @@ public static class InputUtils
                 return input;
             }
 
-            Console.WriteLine("The input cannot be empty!");
-
-
+            Console.WriteLine($"{ConsoleColors.Red}The input cannot be empty!{ConsoleColors.Reset}");
         }
-
     }
 }
