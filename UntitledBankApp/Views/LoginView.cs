@@ -8,7 +8,6 @@ public class LoginView : View
         var menuOptions = new string[] { "1. Login", "2. About", "3. Exit" };
         Array.ForEach(menuOptions, Console.WriteLine);
 
-
         bool Choices = false;
         while (!Choices)
         {
@@ -19,8 +18,8 @@ public class LoginView : View
             {
                 case "1":
                     Console.Clear();
-                    var username = InputUtils.GetNonEmptyString("Username");
-                    var password = InputUtils.GetNonEmptyString("Password");
+                    var username = InputUtils.GetNonEmptyString("Username:");
+                    var password = GetHiddenPassword("Password:");
                     return (username, password);
                 case "2":
                     DisplayAbout();
@@ -47,19 +46,16 @@ public class LoginView : View
     private void DisplayAbout()
     {
         var aboutNames = new string[] { "Adrian Moreno", "Alexander Doja", "Erik Berglund", "Theodor Hägg", "Yarub Adnan" };
-      
+
         DisplayAboutNames(aboutNames);
         Console.ResetColor();
     }
 
     void DisplayAboutNames(string[] names)
     {
-     
-
         foreach (var name in names)
         {
             Console.WriteLine(name);
-            //currentTop++;
             System.Threading.Thread.Sleep(1000);
         }
         Console.Clear();
@@ -67,4 +63,30 @@ public class LoginView : View
         GetCredentials();
     }
 
+    private string GetHiddenPassword(string prompt)
+    {
+        Console.Write(prompt);
+        string password = "";
+        ConsoleKeyInfo key;
+
+        do
+        {
+            key = Console.ReadKey(true);
+
+            // Ignore any key that is not a printable ASCII character
+            if (key.Key != ConsoleKey.Backspace && key.KeyChar != '\u0000' && key.Key != ConsoleKey.Enter)
+            {
+                password += key.KeyChar;
+                Console.Write("*");
+            }
+            else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+            {
+                password = password[0..^1];
+                Console.Write("\b \b");
+            }
+        } while (key.Key != ConsoleKey.Enter);
+
+        Console.WriteLine(); // Move to the next line after Enter is pressed
+        return password;
+    }
 }

@@ -116,7 +116,45 @@ public class ClientPresenter : Presenter
 
         // Display the client accounts
         _clientView.DisplayClientAccounts(clientAccounts);
+
+
+
+         Console.WriteLine();
+        var updateChoice = _inputClient.GetYesNoAnswer("Do you want to update your password or email? (Y/N)");
+
+        if (updateChoice )
+        {
+            UpdateClientCredentials(client);
+        }
     }
+
+
+    private void UpdateClientCredentials(Client client)
+    {
+        Console.WriteLine("Choose an option to update:");
+        Console.WriteLine("1. Update Password");
+        Console.WriteLine("2. Update Email");
+
+        var updateOption = Console.ReadLine().Trim();
+
+        switch (updateOption)
+        {
+            case "1":
+                var newPassword = InputUtils.GetNonEmptyString("Enter new password:");
+                _pseudoDb.UpdateClientPassword(client, newPassword);
+                Console.WriteLine("Password updated successfully!");
+                break;
+            case "2":
+                var newEmail = InputUtils.GetNonEmptyString("Enter new email:");
+                _pseudoDb.UpdateClientEmail(client, newEmail);
+                Console.WriteLine("Email updated successfully!");
+                break;
+            default:
+                Console.WriteLine("Invalid option. No changes made.");
+                break;
+        }
+    }
+
 
     //....................................................................................................................
     public TransferOption DisplayTransferOptions()
@@ -218,7 +256,6 @@ public class ClientPresenter : Presenter
                 Amount = transferAmount,
                 TransferSuccessful = true
             });
-
             // Display the transfer details
             Console.WriteLine("Transfer Details:");
             Console.WriteLine($"Source Account: {sourceAccountNumber} Target Account: {targetAccountNumber} Amount: {transferAmount} Success: true");

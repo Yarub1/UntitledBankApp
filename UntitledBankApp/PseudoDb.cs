@@ -60,6 +60,17 @@ public class PseudoDb
         Users.Add(client);
     }
 
+    //..........................................................
+    public void UpdateClientPassword(Client client, string newPassword)
+    {
+        client.Password = newPassword;
+    }
+
+    public void UpdateClientEmail(Client client, string newEmail)
+    {
+        client.Email = newEmail;
+    }
+    //...............................................................
 
     public void AddUser(User user)
     {

@@ -269,7 +269,13 @@ public class ClientService
         return _pseudoDb.AllAccounts.FirstOrDefault(account => account.Number == targetAccountNumber && account.Balance.Currency.Code == targetCurrency);
     }
 
+    //.......................................
 
+    public void NotifyExternalTransferSuccess(decimal amount, Currency currency)
+    {
+
+        Console.WriteLine($"External transfer of {amount} {currency.Code} was successful.");
+    }
 }
 
 

@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using UntitledBankApp;
+using UntitledBankApp.Models;
 using UntitledBankApp.Views.Utilities;
 
 
@@ -44,7 +45,24 @@ public class ClientView : View
         {
             Console.WriteLine("No accounts found for the client.");
         }
+         Console.WriteLine("[Client Information:]\n.........................");
+
+    Console.WriteLine($"Full Name: {_client.FullName}");
+    Console.WriteLine($"Client ID: {accounts.Count}");
+    Console.WriteLine($"Email: {_client.Email}");
+    Console.WriteLine($"Address: {_client.Address}");
+    Console.WriteLine($"Telephone Number: {_client.TelephoneNumber}");
+
+
+
+
+       
+
+
+
     }
+
+
 
 
     //........................................................................
