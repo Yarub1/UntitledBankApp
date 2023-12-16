@@ -58,7 +58,7 @@ public class AdminService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred: {ex.Message}");
+            Console.WriteLine($"An error occurred: {ex.Message}", ConsoleColor.DarkRed);
             return false;
         }
     }
