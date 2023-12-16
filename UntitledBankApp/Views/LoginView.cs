@@ -18,7 +18,7 @@ public class LoginView : View
             {
                 case "1":
                     Console.Clear();
-                    var username = InputUtils.GetNonEmptyString("Username:");
+                    var username = InputUtils.GetNonEmptyString("Username");
                     var password = GetHiddenPassword("Password:");
                     return (username, password);
                 case "2":

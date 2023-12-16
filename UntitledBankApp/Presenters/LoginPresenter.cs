@@ -11,7 +11,6 @@ using UntitledBankApp;
         private const int MaxLoginAttempts = 3;
         private int _loginAttempts;
         private bool _logoutRequested = false;
-
         public LoginPresenter(PseudoDb pseudoDb, LoginService loginService, LoginView loginView)
         {
             _pseudoDb = pseudoDb;
@@ -64,8 +63,8 @@ using UntitledBankApp;
             switch (user)
             {
                 case Client client:
-                    RunPresenter(new ClientPresenter(_pseudoDb, new ClientService(_pseudoDb), new ClientView(client), new InputClient()));
-                    break;
+                RunPresenter(new ClientPresenter(_pseudoDb, new ClientService(_pseudoDb), new ClientView(client), new InputClient()));
+                break;
                 case Admin admin:
                     RunPresenter(new AdminPresenter(_pseudoDb, new AdminService(_pseudoDb, new UserFactory()), new AdminView(admin)));
                     break;

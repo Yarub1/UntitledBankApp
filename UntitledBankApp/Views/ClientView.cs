@@ -7,11 +7,9 @@ using UntitledBankApp.Views.Utilities;
 public class ClientView : View
 {
     private Client _client;
-
     public ClientView(Client client)
     {
         _client = client;
-
     }
 
     protected override void DisplayHeader()
@@ -53,10 +51,47 @@ public class ClientView : View
     Console.WriteLine($"Address: {_client.Address}");
     Console.WriteLine($"Telephone Number: {_client.TelephoneNumber}");
 
+      
 
 
 
-       
+
+    }
+
+    public void DisplayClientAccountsWithUpdate(List<Account> accounts)
+    {
+        if (accounts != null && accounts.Count > 0)
+        {
+            StringBuilder tableBuilder = new StringBuilder();
+
+            tableBuilder.AppendLine($"Client: {_client.FullName}");
+            tableBuilder.AppendLine("┌─────────────────────────────────────────────────────────────────────────┐");
+            tableBuilder.AppendLine("│ Account Type  Account Number  Balance              Interest Rate        │");
+            tableBuilder.AppendLine("├─────────────────────────────────────────────────────────────────────────┤");
+
+            foreach (var account in accounts)
+            {
+                tableBuilder.AppendLine($"│ {account.AccountType,-13} {account.Number,-15} {account.Balance.Amount,-20:C2} {account.InterestRate,-20:P2} │");
+            }
+
+            tableBuilder.AppendLine("└─────────────────────────────────────────────────────────────────────────┘");
+
+            Console.WriteLine(tableBuilder.ToString());
+        }
+        else
+        {
+            Console.WriteLine("No accounts found for the client.");
+        }
+        Console.WriteLine("[Client Information:]\n.........................");
+
+        Console.WriteLine($"Full Name: {_client.FullName}");
+        Console.WriteLine($"Client ID: {accounts.Count}");
+        Console.WriteLine($"Email: {_client.Email}");
+        Console.WriteLine($"Address: {_client.Address}");
+        Console.WriteLine($"Telephone Number: {_client.TelephoneNumber}");
+
+
+
 
 
 
@@ -64,11 +99,10 @@ public class ClientView : View
 
 
 
-
     //........................................................................
-  
-   
-public enum TransferOption
+
+
+    public enum TransferOption
     {
         TransferBetweenYourAccounts =1,
         ViewTransferHistory=2 ,

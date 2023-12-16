@@ -37,7 +37,7 @@ public class ClientPresenter : Presenter
         Account accountSavings = _pseudoDb.accountSavings;
         decimal loanAmount = 1000.0m;
         // Add your menu options
-        menu.AddOption("1. View Accounts", DisplayClientAccounts);
+        menu.AddOption("1. View Accounts", DisplayClientAccountsWithUpdate);
         menu.AddOption("2. Transfer Options", () => HandleTransferOption(DisplayTransferOptions()));
         menu.AddOption("3. Open New Account", OpenNewAccount);
         menu.AddOption("4. Get Account By Currency", AccountByCurrency);
@@ -63,7 +63,7 @@ public class ClientPresenter : Presenter
             switch (adminChoice.ToUpper())
             {
                 case "1":
-                    DisplayClientAccounts();
+                    DisplayClientAccountsWithUpdate();
                     InputUtils.GetNonEmptyString("Press F to exit");
                     break;
                 case "2":
@@ -106,6 +106,34 @@ public class ClientPresenter : Presenter
         _logoutRequested = true;
 
     }
+
+
+    public void DisplayClientAccountsWithUpdate()
+    {
+        // Get the client whose accounts need to be displayed
+        Client client = _pseudoDb.Users.OfType<Client>().FirstOrDefault();
+
+        // Get the updated list of client accounts
+        clientAccounts = _clientService.GetClientAccounts(client);
+
+        // Display the client accounts
+        _clientView.DisplayClientAccounts(clientAccounts);
+
+        InputClient _inputClient = new InputClient();
+
+        Console.WriteLine();
+        var updateChoice = _inputClient.GetYesNoAnswer("Do you want to update your password or email? (Y/N)");
+
+        if (updateChoice)
+        {
+          UpdateClientCredentials(client);
+        }
+
+
+    }
+
+
+
     public void DisplayClientAccounts()
     {
         // Get the client whose accounts need to be displayed
@@ -117,19 +145,10 @@ public class ClientPresenter : Presenter
         // Display the client accounts
         _clientView.DisplayClientAccounts(clientAccounts);
 
-
-
-         Console.WriteLine();
-        var updateChoice = _inputClient.GetYesNoAnswer("Do you want to update your password or email? (Y/N)");
-
-        if (updateChoice )
-        {
-            UpdateClientCredentials(client);
-        }
     }
 
 
-    private void UpdateClientCredentials(Client client)
+    public void UpdateClientCredentials(Client client)
     {
         Console.WriteLine("Choose an option to update:");
         Console.WriteLine("1. Update Password");
