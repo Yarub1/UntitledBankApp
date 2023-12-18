@@ -239,6 +239,13 @@ namespace UntitledBankApp.Services
         }
 
         public void RecordTransfer(int sourceAccountNumber, int targetAccountNumber, decimal amount, bool transferSuccessful)
+        /// <summary>
+        /// Records a transfer between two accounts.
+        /// </summary>
+        /// <param name="sourceAccountNumber">The account number of the source account.</param>
+        /// <param name="targetAccountNumber">The account number of the target account.</param>
+        /// <param name="amount">The amount transferred.</param>
+        /// <param name="transferSuccessful">A flag indicating whether the transfer was successful.</param>
         {
             TransferRecord transferRecord = new TransferRecord
             {
@@ -254,6 +261,13 @@ namespace UntitledBankApp.Services
 
         //................................
         public decimal ConvertAmount(Account sourceAccount, decimal targetAccount, decimal amount)
+        /// <summary>
+        /// Converts the specified amount from the source account's currency to the target account's currency.
+        /// </summary>
+        /// <param name="sourceAccount">The source account.</param>
+        /// <param name="targetAccount">The target account's currency rate.</param>
+        /// <param name="amount">The amount to convert.</param>
+        /// <returns>The converted amount.</returns>
         {
             decimal convertedAmount = amount * (sourceAccount.Balance.Currency.Rate / targetAccount);
 
@@ -261,6 +275,12 @@ namespace UntitledBankApp.Services
         }
 
         public Account AccountByCurrency(int targetAccountNumber, CurrencyCode targetCurrency)
+        /// <summary>
+        /// Returns the account with the specified target account number and target currency.
+        /// </summary>
+        /// <param name="targetAccountNumber">The target account number.</param>
+        /// <param name="targetCurrency">The target currency code.</param>
+        /// <returns>The account with the specified target account number and target currency, or null if not found.</returns>
         {
             return _pseudoDb.AllAccounts.FirstOrDefault(account => account.Number == targetAccountNumber && account.Balance.Currency.Code == targetCurrency);
         }
@@ -270,6 +290,11 @@ namespace UntitledBankApp.Services
         public void NotifyExternalTransferSuccess(decimal amount, Currency currency)
         {
             Console.WriteLine($"{ConsoleColors.Green}External transfer of {amount} {currency.Code} was successful.{ConsoleColors.Reset}");
+            /// <summary>
+            /// Notifies the success of an external transfer.
+            /// </summary>
+            /// <param name="amount">The amount transferred.</param>
+            /// <param name="currency">The currency of the transfer.</param>
         }
     }
 }

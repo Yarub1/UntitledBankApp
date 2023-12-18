@@ -9,7 +9,7 @@ public class LoginService
         _pseudoDb = pseudoDb;
     }
     
-    public User? GetUser(string username, string password)
+    public User? GetUser(string username, string password, string captcha)
     {
         return _pseudoDb.Users.Find(u => u.Username == username && u.Password == password);
     }

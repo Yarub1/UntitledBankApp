@@ -10,6 +10,7 @@ namespace UntitledBankApp.Presenters
 {
     public class ClientPresenter : Presenter
     {
+        // This section declares private fields and initializes them with default values.
         private PseudoDb _pseudoDb;
         private ClientService _clientService;
         private ClientView _clientView;
@@ -23,13 +24,16 @@ namespace UntitledBankApp.Presenters
         private bool _logoutRequested = false;
 
         public ClientPresenter(PseudoDb pseudoDb, ClientService clientService, ClientView clientView, InputClient inputClient)
+        // Constructor for the ClientPresenter class
         {
             _pseudoDb = pseudoDb;
             _clientService = clientService;
             _clientView = clientView;
             _inputClient = inputClient; // Ensure _inputClient is assigned
         }
-
+        /// <summary>
+        /// This method handles the presenter logic for the client. It displays a menu with various options for the client to choose from, such as viewing accounts, transferring money, opening new accounts, and requesting loans. It also handles the user's input and performs the corresponding actions based on the selected option.
+        /// </summary>
         public override void HandlePresenter()
         {
             ConsoleMenu menu = new ConsoleMenu();
@@ -104,6 +108,9 @@ namespace UntitledBankApp.Presenters
             _logoutRequested = true;
         }
 
+        /// <summary>
+        /// Displays the client's accounts and allows for updating the password or email.
+        /// </summary>
         public void DisplayClientAccountsWithUpdate()
         {
             // Get the client whose accounts need to be displayed
@@ -126,6 +133,11 @@ namespace UntitledBankApp.Presenters
             }
         }
 
+        /// <summary>
+        /// This method is responsible for displaying the client's accounts.
+        /// It retrieves the client from the pseudo database and gets the updated list of client accounts using the client service.
+        /// Finally, it calls the client view to display the client accounts.
+        /// </summary>
         public void DisplayClientAccounts()
         {
             // Get the client whose accounts need to be displayed
@@ -138,6 +150,10 @@ namespace UntitledBankApp.Presenters
             _clientView.DisplayClientAccounts(clientAccounts);
         }
 
+        /// <summary>
+        /// Updates the client's credentials (password or email) based on the selected option.
+        /// </summary>
+        /// <param name="client">The client whose credentials need to be updated.</param>
         public void UpdateClientCredentials(Client client)
         {
             Console.WriteLine($"{ConsoleColors.Cyan}Choose an option to update:{ConsoleColors.Reset}");
@@ -165,6 +181,12 @@ namespace UntitledBankApp.Presenters
         }
 
         public TransferOption DisplayTransferOptions()
+        // This method displays the transfer options to the client and allows them to choose an option.
+        // It first prompts the client to enter the option number.
+        // If the entered option is invalid, it displays an error message and returns TransferOption.Invalid.
+        // If the entered option is TransferBetweenYourAccounts, it calls the TransferMoney() method and then prompts the client to press F to exit and goes back to the previous menu.
+        // If the entered option is ViewTransferHistory, it calls the ViewTransferHistory() method and then prompts the client to press F to exit and goes back to the previous menu.
+        // If the entered option is any other value, it displays an error message.
         {
             int accountNumberToDisplay = 1; // Update here
 
@@ -204,6 +226,10 @@ namespace UntitledBankApp.Presenters
             return transferOption;
         }
 
+        /// <summary>
+        /// Handles the selected transfer option and performs the corresponding action.
+        /// </summary>
+        /// <param name="transferOption">The selected transfer option.</param>
         public void HandleTransferOption(TransferOption transferOption)
         {
             switch (transferOption)
@@ -221,6 +247,14 @@ namespace UntitledBankApp.Presenters
             }
         }
 
+        /// <summary>
+        /// This method transfers money from one account to another.
+        /// It prompts the user to enter the source account number, whether it is an external transfer, and the target account number.
+        /// It then prompts the user to enter the transfer amount.
+        /// The method calls the Transfer method of the ClientService class to perform the transfer.
+        /// If the transfer is successful, it adds a new TransferRecord to the transferRecords list and displays the transfer details.
+        /// If the transfer fails, it displays an error message.
+        /// </summary>
         public void TransferMoney()
         {
             DisplayClientAccounts();
@@ -265,6 +299,10 @@ namespace UntitledBankApp.Presenters
             }
         }
 
+        /// <summary>
+        /// Displays the transfer history for the specified account number.
+        /// </summary>
+        /// <param name="accountNumber">The account number.</param>
         public void ViewTransferHistory(int accountNumber)
         {
             var transferHistory = _clientService.GetTransferHistory(accountNumber);
@@ -282,42 +320,68 @@ namespace UntitledBankApp.Presenters
             }
             else
             {
-                // Console.WriteLine($"{ConsoleColors.Cyan}No transfer history found for Account {accountNumber}.{ConsoleColors.Reset}");
+                Console.WriteLine($"{ConsoleColors.Cyan}No transfer history found for Account {accountNumber}.{ConsoleColors.Reset}");
             }
         }
 
+        /// <summary>
+        /// Opens a new account for an existing client.
+        /// </summary>
         public void OpenNewAccount()
+        /// <summary>
+        /// This method is responsible for opening a new account for a client.
+        /// It prompts the user to enter the account type, currency code, and initial deposit.
+        /// It then checks if the client exists in the database and opens the account if successful.
+        /// If the account opening is successful, it displays a success message.
+        /// If the account opening fails, it displays an error message.
+        /// </summary>
         {
-            string accountType = _inputClient.GetAccountType();
-            CurrencyCode currencyCode = _inputClient.GetCurrencyCode();
-            decimal initialDeposit = _inputClient.GetInitialDeposit();
-
-            Client existingClient = _pseudoDb.Users.FirstOrDefault(c => c.Username == "2") as Client;
-
-            if (existingClient != null)
+            try
             {
-                bool success = _clientService.OpenAccount(existingClient, currencyCode, accountType, initialDeposit);
+                string accountType = _inputClient.GetAccountType();
+                CurrencyCode currencyCode = _inputClient.GetCurrencyCode();
+                decimal initialDeposit = _inputClient.GetInitialDeposit();
 
-                if (success)
+                Client existingClient = _pseudoDb.Users.FirstOrDefault(c => c.Username == "2") as Client;
+
+                if (existingClient != null)
                 {
-                    Console.WriteLine($"{ConsoleColors.Green}Account opened successfully!{ConsoleColors.Reset}");
+                    bool success = _clientService.OpenAccount(existingClient, currencyCode, accountType, initialDeposit);
+
+                    if (success)
+                    {
+                        Console.WriteLine($"{ConsoleColors.Green}Account opened successfully!{ConsoleColors.Reset}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{ConsoleColors.Red}Failed to open the account. Please try again.{ConsoleColors.Reset}");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine($"{ConsoleColors.Red}Failed to open the account. Please try again.{ConsoleColors.Reset}");
+                    Console.WriteLine($"{ConsoleColors.Red}Client with the specified username not found.{ConsoleColors.Reset}");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine($"{ConsoleColors.Red}Client with the specified username not found.{ConsoleColors.Reset}");
+                Console.WriteLine($"{ConsoleColors.Red}An error occurred while opening the account: {ex.Message}{ConsoleColors.Reset}");
             }
         }
 
         public void AccountByCurrency()
+        /// <summary>
+        /// Retrieves an account based on the specified account number and currency code.
+        /// Converts the specified amount from the source account's currency to the target currency.
+        /// </summary>
+        /// <param name="targetAccountNumber">The target account number.</param>
+        /// <param name="targetCurrency">The target currency code.</param>
+        /// <param name="targetAccount">The target account's currency rate.</param>
+        /// <param name="amountToConvert">The amount to convert.</param>
+        /// <returns>The converted amount in the target currency.</returns>
         {
             DisplayClientAccounts();
 
-            int targetAccountNumber = _inputClient.GetAccountNumber($"{ConsoleColors.Cyan}Enter the source account number{ConsoleColors.Reset}");
+            int targetAccountNumber = _inputClient.GetAccountNumber($"{ConsoleColors.Cyan}Enter the target account number{ConsoleColors.Reset}");
             CurrencyCode targetCurrency = _inputClient.GetCurrencyCode();
             decimal targetAccount = _inputClient.GetCurrencyRate();
             decimal amountToConvert = _inputClient.GetTransferAmount();
@@ -335,7 +399,12 @@ namespace UntitledBankApp.Presenters
                 Console.WriteLine($"{ConsoleColors.Red}Invalid account number or currency.{ConsoleColors.Reset}");
             }
         }
-
+           /// <summary>
+        /// Requests a loan for the specified account with the given loan amount.
+        /// </summary>
+        /// <param name="account">The account to request the loan for.</param>
+        /// <param name="loanAmount">The amount of the loan.</param>
+        /// <returns>True if the loan is approved, false otherwise.</returns>
         public bool RequestLoan(Account account, decimal loanAmount)
         {
             loanAmount = _inputClient.GetLoanAmount();

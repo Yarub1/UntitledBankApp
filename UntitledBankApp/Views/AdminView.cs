@@ -19,6 +19,7 @@ namespace UntitledBankApp.Views
             Console.WriteLine($"{ConsoleColors.Cyan}LOGGED IN AS ADMIN {_admin.Username}{ConsoleColors.Reset}");
         }
 
+        // Method for creating a new user
         public (UserType userType, string fullName, string username, string password, string passwordVerified, string email, string emailVerified, string address, string telephonenumber) CreateUser()
         {
             int userTypeInput = 0;
@@ -51,21 +52,25 @@ namespace UntitledBankApp.Views
             return (userType, fullName, username, password, passwordVerified, email, emailVerified, address, telephonenumber);
         }
 
+        // Method for getting the currency code to update
         public CurrencyCode GetCurrencyCode()
         {
             return Enum.Parse<CurrencyCode>(InputUtils.GetNonEmptyString($"{ConsoleColors.White}Enter the currency code to update (USD, EUR, SEK){ConsoleColors.Reset}").ToUpper());
         }
 
+        // Method for getting the new exchange rate
         public decimal GetExchangeRate()
         {
             return decimal.Parse(InputUtils.GetNonEmptyString($"{ConsoleColors.White}Enter the new exchange rate{ConsoleColors.Reset}"));
         }
 
+        // Method for getting the new borrowing limit
         public decimal GetBorrowingLimit()
         {
             return decimal.Parse(InputUtils.GetNonEmptyString($"{ConsoleColors.White}Enter new borrowing limit{ConsoleColors.Reset}"));
         }
 
+        // Method for displaying the list of customers
         public void DisplayCustomerList(IEnumerable<Client> clients)
         {
             Console.WriteLine($"{ConsoleColors.Yellow}Customer List:{ConsoleColors.Reset}");
@@ -75,6 +80,7 @@ namespace UntitledBankApp.Views
             }
         }
 
+        // Method for choosing a client from the list
         public string ChooseClientFromList(IEnumerable<Client> clients)
         {
             Console.WriteLine($"{ConsoleColors.Black}Choose a client from the list:{ConsoleColors.Reset}");
@@ -83,3 +89,4 @@ namespace UntitledBankApp.Views
         }
     }
 }
+

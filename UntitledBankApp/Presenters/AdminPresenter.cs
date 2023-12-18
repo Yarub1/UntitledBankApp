@@ -111,6 +111,14 @@ namespace UntitledBankApp.Presenters
             try
             {
                 Role userRole = createUserResult.userType == UserType.Admin ? Role.Admin : Role.Client;
+
+                // Check if the password is strong
+                if (!IsStrongPassword(createUserResult.password))
+                {
+                    Console.WriteLine($"{ConsoleColors.Red}Password is weak. Please use a stronger password.{ConsoleColors.Reset}");
+                    return;
+                }
+
                 bool userCreated = _adminService.CreateUser(userRole, createUserResult.fullName, createUserResult.username, createUserResult.password, createUserResult.passwordVerified, createUserResult.email, createUserResult.emailVerified, createUserResult.address, createUserResult.telephonenumber);
 
                 if (userCreated)
@@ -127,6 +135,31 @@ namespace UntitledBankApp.Presenters
                 Console.WriteLine($"{ConsoleColors.Red}An error occurred: {ex.Message}{ConsoleColors.Reset}");
             }
         }
+
+        private bool IsStrongPassword(string password)
+        {
+            const int MinLength = 8;
+            const int MinUpperCase = 1;
+            const int MinLowerCase = 1;
+            const int MinDigit = 1;
+
+            if (password.Length < MinLength)
+                return false;
+
+            if (password.Count(char.IsUpper) < MinUpperCase)
+                return false;
+
+            if (password.Count(char.IsLower) < MinLowerCase)
+                return false;
+
+            if (password.Count(char.IsDigit) < MinDigit)
+                return false;
+
+            // Additional conditions for a strong password (e.g., special characters)
+
+            return true;
+        }
+
 
         public void CurrencyCode()
         {

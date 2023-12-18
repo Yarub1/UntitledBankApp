@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace UntitledBankApp.Models
 {
+    /// <summary>
+    /// Represents a transfer record in the bank application.
+    /// </summary>
     public class TransferRecord
     {
         public DateTime Timestamp { get; set; }

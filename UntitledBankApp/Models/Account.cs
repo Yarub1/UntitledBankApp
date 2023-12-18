@@ -9,8 +9,19 @@ public class Account
     public Balance Balance { get; set; }
     public List<Transfer> Transfers { get; set; }
     public decimal InterestRate { get; set; }
+    /// <summary>
+    /// Represents the type of the account.
+    /// </summary>
     public string AccountType { get; set; }
+
+    /// <summary>
+    /// Represents the constant value for savings account type.
+    /// </summary>
     public const string Savings = "Savings";
+
+    /// <summary>
+    /// Represents the constant value for checking account type.
+    /// </summary>
     public const string Checking = "Checking";
     public Account(string accountType, int number, Client client, Balance balance, decimal interestRate)
     {

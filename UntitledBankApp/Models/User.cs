@@ -17,6 +17,9 @@ public abstract class User
     private string _passwordVerified = null!;
     private string _address = null!;
     private string _telephonenumber = null;
+    private string _captcha = null!;
+
+  
     public string FullName
     {
         get => _fullName;

@@ -3,6 +3,9 @@ using UntitledBankApp.Views.Utilities;
 using UntitledBankApp;
 using System;
 
+/// <summary>
+/// The LoginPresenter class handles the logic for the login functionality.
+/// </summary>
 public class LoginPresenter : Presenter
 {
     private PseudoDb _pseudoDb;
@@ -20,6 +23,9 @@ public class LoginPresenter : Presenter
         _loginAttempts = 0;
     }
 
+    /// <summary>
+    /// Handles the presenter logic.
+    /// </summary>
     public override void HandlePresenter()
     {
         while (!_logoutRequested)
@@ -51,14 +57,22 @@ public class LoginPresenter : Presenter
         }
     }
 
+    /// <summary>
+    /// Retrieves the user from the provided credentials.
+    /// </summary>
+    /// <returns>The user object if the credentials are valid, otherwise null.</returns>
     private User? GetUserFromCredentials()
     {
-        var (username, password) = _loginView.GetCredentials();
-        var user = _loginService.GetUser(username, password);
+        var (username, password, captcha) = _loginView.GetCredentials();
+        var user = _loginService.GetUser(username, password, captcha);
 
         return user;
     }
 
+    /// <summary>
+    /// Redirects the user based on their role.
+    /// </summary>
+    /// <param name="user">The user object.</param>
     private void RedirectUserBasedOnRole(User user)
     {
         switch (user)
@@ -72,6 +86,9 @@ public class LoginPresenter : Presenter
         }
     }
 
+    /// <summary>
+    /// Requests a logout from the presenter.
+    /// </summary>
     public void RequestLogout()
     {
         _logoutRequested = true;
