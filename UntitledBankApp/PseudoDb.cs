@@ -10,6 +10,7 @@ public class PseudoDb
     public Account accountSavings { get; set; }
     public Account accountChecking { get; set; }
     public List<TransferRecord> TransferRecords { get; set; } = new List<TransferRecord>();
+    // This class represents a pseudo database that stores various information related to accounts, clients, and currencies.
     public Dictionary<CurrencyCode, Currency> Currencies => _currencies;
     private Dictionary<CurrencyCode, Currency> _currencies = new Dictionary<CurrencyCode, Currency>
     {

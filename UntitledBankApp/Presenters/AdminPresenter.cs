@@ -34,7 +34,7 @@ namespace UntitledBankApp.Presenters
                 menu.AddOption($"1. Create User", CreateUser);
                 menu.AddOption($"2. Set Currency Rate", CurrencyCode);
                 menu.AddOption($"3. Borrowing Limit", SetBorrowingLimit);
-                menu.AddOption($"4. Logout", () => Logout());
+                menu.AddOption($"{ConsoleColors.White}4. Logout{ConsoleColors.Reset}", () => Logout());
                 menu.AddOption($"B. Back", GoBack);
 
                 menu.ShowMenu();
