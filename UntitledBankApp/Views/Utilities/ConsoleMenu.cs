@@ -1,10 +1,16 @@
-﻿public class ConsoleMenu
+﻿/// <summary>
+/// Represents a console menu that allows users to navigate through options and perform actions.
+/// </summary>
+public class ConsoleMenu
 {
     private Stack<Action> _menuStack;
     private Dictionary<string, Action> _menuOptions;
     private bool _isConsoleRedLineActive;
     private bool _isProgramRunning;
 
+    /// <summary>
+    /// Initializes a new instance of the ConsoleMenu class.
+    /// </summary>
     public ConsoleMenu()
     {
         _menuStack = new Stack<Action>();
@@ -13,21 +19,36 @@
         _isProgramRunning = true; // Set it to true initially
     }
 
+    /// <summary>
+    /// Adds an option to the console menu.
+    /// </summary>
+    /// <param name="option">The option to add.</param>
+    /// <param name="action">The action to perform when the option is selected.</param>
     public void AddOption(string option, Action action)
     {
         _menuOptions.Add(option, action);
     }
 
+    /// <summary>
+    /// Checks if the program is running.
+    /// </summary>
+    /// <returns>True if the program is running; otherwise, false.</returns>
     public bool IsProgramRunning()
     {
         return _isProgramRunning;
     }
 
+    /// <summary>
+    /// Stops the program.
+    /// </summary>
     public void StopProgram()
     {
         _isProgramRunning = false;
     }
 
+    /// <summary>
+    /// Shows the menu options on the console.
+    /// </summary>
     public void ShowMenu()
     {
         foreach (var option in _menuOptions.Keys)
@@ -36,6 +57,10 @@
         }
     }
 
+    /// <summary>
+    /// Handles the user input and performs the corresponding action.
+    /// </summary>
+    /// <param name="input">The user input.</param>
     public void HandleInput(string input)
     {
         if (_isConsoleRedLineActive)
@@ -85,6 +110,9 @@
         }
     }
 
+    /// <summary>
+    /// Starts the console red line, allowing users to enter commands.
+    /// </summary>
     public void StartConsoleRedLine()
     {
         _isConsoleRedLineActive = true;
